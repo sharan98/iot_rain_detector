@@ -1,0 +1,102 @@
+possible ways of storing data:
+
+{
+    'DateTime':       time.ctime(), #datetime str in this format:  "Tue Sep 25 18:40:36 2018"
+    'Temperature':    temp,
+    'Humidity':       humidity,
+    'Rain reading':   rain_value,
+    'Light':          resistance,
+    'Raining':        True or False,
+    'User disagreed': True or False,
+    'Threshold':      'rain light',
+}
+
+{
+    'DateTime': {
+        'day' : day,        #Tue
+        'mon' : mon,        #Sep
+        'date': day_of_mon, #26
+        'Time': {
+            'hour' : hh,    #17
+            'min'  : mm,    #23
+            'sec'  : sec    #55
+        },
+        'year' : yyyy       #2018     
+    },      
+    'Temperature':    temp,
+    'Humidity':       humidity,
+    'Rain reading':   rain_value,
+    'Light':          resistance,
+    'Raining':        True or False,
+    'User disagreed': True or False,
+    'Threshold':      'rain light'
+}
+
+time.localtime() : {
+    'Temperature':    temp,
+    'Humidity':       humidity,
+    'Rain reading':   rain_value,
+    'Light':          resistance,
+    'Raining':        True or False,
+    'User disagreed': True or False,
+    'Threshold':      'rain light'
+}
+
+
+{
+
+    'day' : day,            #Tue or 2
+    'mon' : mon,            #Sep or 9
+    'date': day_of_mon,     #26
+    'hour' : hh,            #17
+    'min'  : mm,            #23
+    'sec'  : sec            #55
+    'year' : yyyy           #2018 
+    'Temperature':    temp,
+    'Humidity':       humidity,
+    'Rain reading':   rain_value,
+    'Light':          resistance,
+    'Raining':        True or False,
+    'User disagreed': True or False,
+    'Threshold':      'rain light',
+}
+
+
+Notes:
+    t = time.strptime(time.ctime(), '%a %b %d %H:%M:%S %Y')   #abbr day, abbr mon, day_of_mon, Time_24format, 4-digit year
+    returns struct_time
+    t.tm_year = 2018
+    t.tm_mon, t.tm_mday, t.tm_hour, tm_min
+
+    *struct_time can be compared*
+
+    time.localtime(time.time())
+
+    time.ctime(time.time())
+    'Mon Oct  1 21:53:52 2018'
+
+    time.strftime('%a %b %d %H:%M:%S %Y',  time.localtime())
+    'Mon Oct 01 21:57:24 2018'
+
+    time.strptime(time.ctime(time.time()), '%a %b %d %H:%M:%S %Y')
+
+
+def make_data(temp):
+    t = strptime(ctime(), '%a %b %d %H:%M:%S %Y')   #abbr day, abbr mon, day_of_mon, Time_24format, 4-digit year
+    time = {'hour' : t.tm_hour, 'min' : t.tm_min , 'sec': t.tm_sec}
+    datetime = {'date' : t.tm_mday, 'time' : time}
+    data = {'datetime': datetime, 'temp' :  temp}
+    return data
+    #make sure 'sec' exisits in the db (coz of pyrebase)
+    #if start_at is not given, output is not sorted
+    d = f.db.child("Details").order_by_child('sec').start_at(20).get()
+
+dict to csv:
+    l = list of dictionaries
+    keys = list of the keys
+    f = open(filename, mode)
+    for d in l:
+        for k in keys:
+                f.write(str(d[k]) + ',')
+        f.write('\n')
+    f.close()
